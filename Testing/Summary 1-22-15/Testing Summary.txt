@@ -1,0 +1,43 @@
+DC-DC Converter - Buckeye Current 2014-15
+Design by:  Victor Brechbill
+Flyback converter topology using TI UCC 28710 uC
+
+
+This DC-DC converter is intended for use on the Buckeye Current RW-3 Electric Motorcycle to 
+regulate the HV battery pack to +12VDC as power for the low voltage electronic systems.
+
+Testing has been performed at this point with a 300V supply limited to 1A, and a 6 ohm
+resistive load.  The primary and secondary grounds have been connected to allow probing of
+both sides simulataneously.  
+
+
+Current status of testing:
+
+The controller appears to to perform the startup operation described in section 8.4.4 of the 
+datasheet, switching the FET three times with a short impulse blip.  This can be seen in
+scope capture ~05 in the containing folder.  It then looks as if it is trying to start up
+as it produces a DRV signal to the gate of significant duty cycle, but then returns to 
+a reset procedure.  The circuit behaves this way for a few cycles on startup, and then remains 
+in a low power state where it just produces the initial three pulses with no significant switch 
+following.
+
+The screen captures 6 and 16 show in more detail the quick pulses at startup, and the screen
+captures 7, 14 and 15 show in more detail the waveform when the controller "tries" to enter
+normal operation.
+
+
+I initially assumed that the controller must be getting a bad measurement that causes it to
+reset, but this was when the circuit was experiencing worse ringing than seen in these 
+tests.  I was able to improve this ringing and now the measurement signals VS and CS seem
+fairly stable.
+
+The max current threshold for CS is 0.75V, but from the 0.25ohm shunt this would require a
+primary current of 3A.  This is not possible with the testing setup.  There is a bit of 
+ringing on CS as seen in scope capture ~16, but CS is sampled when DRV is high, not when
+this ringing exists.
+
+The VS signal does not seem to have any significant issues.
+
+This is now the second controller that has been tested.  Any suggestions for further
+improvements, modifications, or tests would be greatly appreciated.
+
